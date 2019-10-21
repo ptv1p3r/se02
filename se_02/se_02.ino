@@ -88,10 +88,10 @@ void loop() {
     rainDescription = "Sem chuva";
   } else {
     switch (rainMap) {
-      case 0:    // Sensor getting wet
+      case 0:    
         rainDescription = "Forte";
         break;
-      case 1:    // Sensor getting wet
+      case 1:    
         rainDescription = "Fraca";
         break;
     }
