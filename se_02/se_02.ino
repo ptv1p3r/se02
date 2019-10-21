@@ -1,53 +1,72 @@
-//Resistor 10k do vcc ao pino de sinal
-
 //LIVRARIAS
 #include <DHT.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define DHTPIN 2          //pin DHT sensor 
+#define DHTTYPE DHT22     //tipo de sensor
+#define OLED_ADDR   0x3C  // endereço i2c oled
+#define LDRPIN A0         //pin DHT sensor 
+
+DHT dht(DHTPIN, DHTTYPE); //instacia sensor
+
+// reset pin not used on 4-pin OLED module
+Adafruit_SSD1306 display(-1);  // -1 = no reset pin
+
+// 128 x 64 pixel display
+#if (SSD1306_LCDHEIGHT != 64)
+#error("Height incorrect, please fix Adafruit_SSD1306.h!");
+#endif
 
 //VARIAVEIS
-  #define DHTPIN 2 // pino do sensor dht11
-  #define DHTTYPE DHT11 //tipo de sensor
-  DHT dht(DHTPIN, DHTTYPE);
+float humidityValue = 0;    // humidade
+float temperatureValue = 0; // temperatura
+float heatIndexValue = 0;   // heat index
+int lightValue = 0;         // light value
 
 void setup() {
+  // initialize and clear display
+  display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
+  display.clearDisplay();
+
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(27,30);
+  display.print("Hello, world!");
+  
+  display.display();
+  
   Serial.begin(9600);
-  Serial.println(F("DHTxx test!"));
+  Serial.println(F("teste leituras:"));
 
   dht.begin();
 
 }
 
 void loop() {
-  delay(2000); / Aguarda dois segundos entre as medições
+  delay(2000); // dois segundos entre as medições (dth22 specs)
 
-  // Reading temperature or humidity takes about 250 milliseconds!
-  // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-  float h = dht.readHumidity();
-  // Read temperature as Celsius (the default)
-  float t = dht.readTemperature();
-  // Read temperature as Fahrenheit (isFahrenheit = true)
-  float f = dht.readTemperature(true);
+  humidityValue = dht.readHumidity(); // valor humidade em celcius
+  temperatureValue = dht.readTemperature(); // valor temperatura celcius 
+  lightValue = analogRead(LDRPIN);
 
-  // Check if any reads failed and exit early (to try again).
-  if (isnan(h) || isnan(t) || isnan(f)) {
-    Serial.println(F("Failed to read from DHT sensor!"));
+  // valida valores de sensores.
+  if (isnan(humidityValue) || isnan(temperatureValue)) {
+    Serial.println(F("Falha na leitura de sensor (DHT)!"));
     return;
   }
-
-  // Compute heat index in Fahrenheit (the default)
-  float hif = dht.computeHeatIndex(f, h);
-  // Compute heat index in Celsius (isFahreheit = false)
-  float hic = dht.computeHeatIndex(t, h, false);
+  // calcula heat index em celcius
+  heatIndexValue = dht.computeHeatIndex(temperatureValue, humidityValue, false);
 
   Serial.print(F("Humidity: "));
-  Serial.print(h);
+  Serial.print(humidityValue);
   Serial.print(F("%  Temperature: "));
-  Serial.print(t);
+  Serial.print(temperatureValue);
   Serial.print(F("°C "));
-  Serial.print(f);
-  Serial.print(F("°F  Heat index: "));
-  Serial.print(hic);
+  Serial.print(F("  Heat index: "));
+  Serial.print(heatIndexValue);
   Serial.print(F("°C "));
-  Serial.print(hif);
-  Serial.println(F("°F"));
-
+  Serial.print(lightValue);
+  Serial.println(F("ldr "));
 }
