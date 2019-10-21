@@ -1,0 +1,33 @@
+\begin{thebibliography}{1}
+
+\bibitem{adafruitGFX}
+adafruit.
+\newblock {\em
+  https://github.com/adafruit/Adafruit-GFX-Library/blob/master/Adafruit_GFX.h}.
+
+\bibitem{adafruitSSD1306}
+adafruit.
+\newblock {\em
+  https://github.com/adafruit/Adafruit_SSD1306/blob/master/Adafruit_SSD1306.h}.
+
+\bibitem{adafruitdht}
+adafruit.
+\newblock {\em https://github.com/adafruit/DHT-sensor-library}.
+
+\bibitem{arduinoCompany}
+ArduinoCompany.
+\newblock {\em https://store.arduino.cc/arduino-uno-rev3}.
+
+\bibitem{wire}
+esp8266.
+\newblock {\em
+  https://github.com/esp8266/Arduino/blob/master/libraries/Wire/Wire.h}.
+
+\bibitem{Pereira2019-2020}
+Prof. Mestre~Melo Pereira.
+\newblock {\em Aulas Teórico-Práticas Sistemas Embebidos 3º ano, 1º
+  semestre da Licenciatura em Engenharia Informática do Instituto Superior
+  Manuel Teixeira Gomes}.
+\newblock ISMAT, 2019-2020.
+
+\end{thebibliography}
